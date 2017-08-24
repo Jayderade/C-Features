@@ -1,30 +1,69 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 namespace Billiards
 {
     [RequireComponent(typeof(Rigidbody))]
     public class Ball : MonoBehaviour
     {
-        public float gravity = -9.81f;
+        public float stopSpeed = 0.2f;
+        public Text countText;
 
         private Rigidbody rigid;
+        private int count;
 
         // Use this for initialization
         void Start()
         {
-            
             rigid = GetComponent<Rigidbody>();
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            rigid.velocity = rigid.velocity.normalized + Vector3.back * gravity;
+            count = 0;
+            SetCountText();
         }
 
         
+        void FixedUpdate()
+        {
+            Vector3 vel = rigid.velocity;
+
+            // Check if velocity is going up
+            if(vel.y >0)
+            {
+                // Cap velocity
+                vel.y = 0;
+            }
+
+            // If the velocity's speed is less than the stop speed
+            // If velocity.magnitude < stopSpeed
+            if(vel.magnitude < stopSpeed)
+            {
+                // Cancel out velocity
+                vel = Vector3.zero;
+            }
+            // Apply desired 'vel' to rigid's velocity
+            rigid.velocity = vel;
+        }
+
+        // Perform physics impact
+        public void Hit(Vector3 dir, float impactForce)
+        {
+            rigid.AddForce(dir * impactForce, ForceMode.Impulse);
+        }
+        void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Pocket"))
+            {
+                Destroy(gameObject);
+                count = count + 1;
+                SetCountText();
+
+            }
+        }
+        
+        void SetCountText()
+        {
+            countText.text = "Score:" + count.ToString();
+        }
     }
 }
