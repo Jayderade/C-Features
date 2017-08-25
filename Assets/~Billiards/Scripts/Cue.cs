@@ -7,7 +7,7 @@ namespace Billiards
 {
     public class Cue : MonoBehaviour
     {
-
+        public float stopSpeed = 0.2f;
         public Ball targetBall; // Target ball selected (which is generally the Cue ball
         public float minPower = 0f;  // The min power which maps to the distance
         public float maxPower = 20f; // The max power which maps to the distance 
@@ -88,7 +88,7 @@ namespace Billiards
             // Hit the ball with direction and power
             targetBall.Hit(aimDirection, hitPower);
             // Deactivate the Cue when done
-            //Deactivate();
+            Deactivate();
         }
         // Use this for initialization
         void Start()
@@ -96,11 +96,16 @@ namespace Billiards
 
         }
 
+        
+       
+
         // Update is called once per frame
         void Update()
         {
+                    
+      
             // Check if left mouse button is pressed
-            if(Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 // Store the click position as the 'prevMousePos'
                 prevMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

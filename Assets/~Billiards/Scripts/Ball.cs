@@ -8,18 +8,14 @@ namespace Billiards
     [RequireComponent(typeof(Rigidbody))]
     public class Ball : MonoBehaviour
     {
-        public float stopSpeed = 0.2f;
-        public Text countText;
+        public float stopSpeed = 0.2f;       
 
-        private Rigidbody rigid;
-        private int count;
+        public Rigidbody rigid;        
 
         // Use this for initialization
         void Start()
         {
-            rigid = GetComponent<Rigidbody>();
-            count = 0;
-            SetCountText();
+            rigid = GetComponent<Rigidbody>();           
         }
 
         
@@ -54,16 +50,9 @@ namespace Billiards
         {
             if (other.gameObject.CompareTag("Pocket"))
             {
-                Destroy(gameObject);
-                count = count + 1;
-                SetCountText();
-
+                Destroy(gameObject);                
             }
-        }
+        }      
         
-        void SetCountText()
-        {
-            countText.text = "Score:" + count.ToString();
-        }
     }
 }
