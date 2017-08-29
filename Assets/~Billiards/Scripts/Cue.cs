@@ -52,6 +52,7 @@ namespace Billiards
         public void Deactivate()
         {
             gameObject.SetActive(false);
+
         }
 
         // Activates the Cue
@@ -88,7 +89,7 @@ namespace Billiards
             // Hit the ball with direction and power
             targetBall.Hit(aimDirection, hitPower);
             // Deactivate the Cue when done
-            Deactivate();
+             Deactivate();
         }
         // Use this for initialization
         void Start()
@@ -129,6 +130,7 @@ namespace Billiards
                 // Hit the ball
                 Fire();
             }
+            
         }
     }
 }

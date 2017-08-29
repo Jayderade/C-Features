@@ -7,15 +7,12 @@ namespace Breakout
 {
     public class Blocks : MonoBehaviour
     {
-        public Text countText;
-
-        private int count;
+        
 
         // Use this for initialization
         void Start()
         {
-            count = 0;
-            SetCountText();
+            
         }
 
         // Update is called once per frame
@@ -23,19 +20,18 @@ namespace Breakout
         {
 
         }
-
-        void OnTriggerEnter(Collider other)
+               
+        void OnCollisionEnter2D(Collision2D other)
         {
-            if (other.gameObject.CompareTag("Boxes"))
-            {               
-                count = count + 1;
-                SetCountText();
+            if (other.gameObject.CompareTag("Ball"))
+            {
+                Destroy(gameObject);
+
             }
+           
         }
 
-        void SetCountText()
-        {
-            countText.text = "Score:" + count.ToString();
-        }
+       
+
     }
 }

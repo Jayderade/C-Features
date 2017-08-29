@@ -8,9 +8,10 @@ namespace Billiards
     [RequireComponent(typeof(Rigidbody))]
     public class Ball : MonoBehaviour
     {
-        public float stopSpeed = 0.2f;       
-
-        public Rigidbody rigid;        
+        public float stopSpeed = 0.2f;
+        public GameObject cue;
+        public Rigidbody rigid;
+        public Ball cueBall;        
 
         // Use this for initialization
         void Start()
@@ -28,6 +29,7 @@ namespace Billiards
             {
                 // Cap velocity
                 vel.y = 0;
+                cue.SetActive(true);
             }
 
             // If the velocity's speed is less than the stop speed

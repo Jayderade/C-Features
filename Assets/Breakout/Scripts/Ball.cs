@@ -9,6 +9,7 @@ namespace Breakout
     {
         public float speed = 5f;
         public Text countText;
+        
 
         private int count;
         private Vector3 velocity;
@@ -28,18 +29,14 @@ namespace Breakout
             // Calculate new velocity from reflection multiply by same speed (velocity.magnitude)
             velocity = reflect.normalized * velocity.magnitude;
 
-            
-        }
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
             if (other.gameObject.CompareTag("Boxes"))
-            {                
+            {
                 count = count + 1;
                 SetCountText();
-                Destroy(gameObject);
             }
         }
+
+        
                        
         // Use this for initialization
         void Start()
@@ -54,9 +51,13 @@ namespace Breakout
             // Moves ball using velocity and deltaTime
             transform.position += velocity * Time.deltaTime;
         }
+
+        
+
         void SetCountText()
         {
             countText.text = "Score:" + count.ToString();
         }
+
     }
 }

@@ -11,7 +11,8 @@ namespace Breakout
 
         public float movementSpeed = 20f;
         public Ball currentBall;
-
+        public bool spaceEnabled = true;
+        
         // Directions array defaults to two values
         public Vector2[] directions = new Vector2[]
         {
@@ -35,13 +36,19 @@ namespace Breakout
             // Fire off the ball in the random direction
             currentBall.Fire(ramdomDir);
         }
-
+       
         void CheckInput()
         {
-            if(Input.GetKeyDown(KeyCode.Space))
+            if (spaceEnabled)
             {
-                Fire();
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Fire();
+                    spaceEnabled = false;
+                }
             }
+           
+           
         }
 
         void Movement()
@@ -64,5 +71,7 @@ namespace Breakout
             CheckInput();
             Movement();
         }
+
+
     }
 }
