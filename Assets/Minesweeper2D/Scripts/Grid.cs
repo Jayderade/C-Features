@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace Minesweeper2D
 {
     public class Grid : MonoBehaviour
@@ -10,8 +11,10 @@ namespace Minesweeper2D
         public int width = 10;
         public int height = 10;
         public float spacing = .155f;
+        public GameObject tile;
 
         private Tile[,] tiles;
+        private Ray mouseRay;
 
         // Functionality for spawning tiles
         Tile SpawnTile(Vector3 pos)
@@ -66,5 +69,35 @@ namespace Minesweeper2D
         {
 
         }
+
+        // Count adjacent mines at element
+        public int GetAdjacentMineCountAt(Tile t)
+        {
+            int count = 0;
+            // Loop through all elements and have each axis go between -1 to 1
+            for (int x = -1; x <= 1; x++)
+            {
+                // Calculate desired coordinates from ones attained
+                int desiredX = t.x + x;
+
+                // IF desiredX is within range of tiles array length
+                    // IF the element at index is a mine
+                        // Increment count 1
+            }
+            return count;
+        }
+
+        void DestroyTile()
+        {
+            mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(mouseRay, out hit))
+            {
+                
+                    tile.SetActive(false);
+                
+            }
+        }
+
     }
 }
