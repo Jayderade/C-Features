@@ -13,6 +13,7 @@ namespace Minesweeper2D
         public float spacing = .155f;
         public GameObject tile;
 
+        private float offSet = .5f;
         private Tile[,] tiles;
         private Ray mouseRay;
 
@@ -40,8 +41,8 @@ namespace Minesweeper2D
                     // Store half size for later use
                     Vector2 halfSize = new Vector2(width / 2, height / 2);
                     // Pivot tiles around Grid
-                    Vector2 pos = new Vector2(x - halfSize.x,
-                                              y - halfSize.y);
+                    Vector2 pos = new Vector2(x - (halfSize.x - offSet),
+                                              y - (halfSize.y - offSet));
                     // Apply spacing
                     pos *= spacing;
                     // Spawn the tile
