@@ -17,6 +17,7 @@ namespace Minesweeper2D
         public Sprite[] emptySprites; // List of empty sprites i.e, empty, 1, 2, 3, 4, etc...
         public Sprite[] mineSprites; // The mine sprites
 
+       
         private SpriteRenderer rend; // Reference to sprite renderer
 
         void Awake()
@@ -48,6 +49,8 @@ namespace Minesweeper2D
                 rend.sprite = emptySprites[adjacentMines];
             }
         }
+
+       
 
         // Update is called once per frame
         void Update()

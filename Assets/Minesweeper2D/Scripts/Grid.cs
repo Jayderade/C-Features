@@ -11,12 +11,12 @@ namespace Minesweeper2D
         public int width = 10;
         public int height = 10;
         public float spacing = .155f;
-        public GameObject tile;
+
+
 
         private float offSet = .5f;
         private Tile[,] tiles;
-        private Ray mouseRay;
-
+        
         // Functionality for spawning tiles
         Tile SpawnTile(Vector3 pos)
         {
@@ -66,9 +66,28 @@ namespace Minesweeper2D
         }
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("shhhh");
+                Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit2D hit = Physics2D.Raycast(mouseRay.origin, mouseRay.direction);
+                if (hit.collider != null)
+                {
+                    // LET tile = hit collider's Tile component
+                    Tile t = hit.collider.GetComponent<Tile>();
+                    // IF tile != null
+                    if (t != null)
+                    {
+                        // LET adjacentMines = GetAdjacentMinesCountAt(tile)
+                        int adjacentMines = GetAdjacentMineCountAt(t);
+                        // CALL tile.Reveal(adjacentMines)
+                        t.Reveal(adjacentMines);
+                    }
 
+                }
+            }
         }
 
         // Count adjacent mines at element
@@ -78,27 +97,28 @@ namespace Minesweeper2D
             // Loop through all elements and have each axis go between -1 to 1
             for (int x = -1; x <= 1; x++)
             {
-                // Calculate desired coordinates from ones attained
-                int desiredX = t.x + x;
+                for (int y = -1; y <= 1; y++)
+                {
+                    // Calculate desired coordinates from ones attained
+                    int desiredX = t.x + x;
+                    int desiredY = t.y + y;
+                    // IF desiredX is within range of tiles array length
+                    if (desiredX >= 0 && desiredY >= 0 && desiredX < width && desiredY < height)
+                    {
+                        Tile tile = tiles[desiredX, desiredY];
+                        // IF the element at index is a mine
+                        if (tile.isMine)
+                        {
+                            // Increment count 1
+                            count ++;
+                        }
+                    }
 
-                // IF desiredX is within range of tiles array length
-                    // IF the element at index is a mine
-                        // Increment count 1
+                }
             }
             return count;
         }
 
-        void DestroyTile()
-        {
-            mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(mouseRay, out hit))
-            {
-                
-                    tile.SetActive(false);
-                
-            }
-        }
-
     }
+
 }
