@@ -20,12 +20,8 @@ namespace Classes
 
         // Use this for initialization
         void Start()
-        {
-            // InvokeRepeating(functionName, time, repeatRate)
-            // functionName = name of the function you want to call in the class
-            // time         = delay for when the funtion gets called the first time
-            // repeatRate   = how often the funtion gets called
-            InvokeRepeating("Spawn", 0, spawnRate);
+        {            
+            Invoke("Spawn", spawnRate);
         }
 
        
