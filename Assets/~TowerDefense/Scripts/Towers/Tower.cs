@@ -14,11 +14,13 @@ namespace TowerDefense
         private float attackTimer = 0f; // Timer to count up to attackRate
         private List<Enemy> enemies = new List<Enemy>(); // List of enemies whithin radius
 
+
+
         void OnTriggerEnter(Collider col)
         {
             Enemy e = col.GetComponent<Enemy>();
 
-            if(e != null)
+            if (e != null)
             {
                 enemies.Add(e);
             }
@@ -28,7 +30,7 @@ namespace TowerDefense
         {
             Enemy e = col.GetComponent<Enemy>();
 
-            if(e != null)
+            if (e != null)
             {
                 enemies.Remove(e);
             }
@@ -36,14 +38,16 @@ namespace TowerDefense
 
         Enemy GetClosestEnemy()
         {
+            enemies = RemoveAllNulls(enemies);
+
             Enemy closest = null;
 
             float minDistance = float.MaxValue;
 
-            for(int i = 0; i <= enemies.Count; i++)
+            for (int i = 0; i < enemies.Count; i++)
             {
-                 float distance = 0;
-                if(distance < minDistance)
+                float distance = Vector3.Distance(transform.position, enemies[i].transform.position);
+                if (distance < minDistance)
                 {
                     minDistance = distance;
                     closest = enemies[i];
@@ -52,11 +56,26 @@ namespace TowerDefense
             return closest;
         }
 
+        List<Enemy> RemoveAllNulls(List<Enemy> listWithNulls)
+        {
+            List<Enemy> listWithoutNulls = new List<Enemy>();
+
+            foreach (Enemy closest in listWithNulls)
+            {
+                if (closest != null)
+                {
+                    listWithoutNulls.Add(closest);
+                }
+            }
+
+            return listWithoutNulls;
+        }
+
         void Attack()
         {
             Enemy closest = GetClosestEnemy();
 
-            if(closest != null)
+            if (closest != null)
             {
                 cannon.Fire(closest);
             }
