@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class DestroyScore : MonoBehaviour
 {
 
-    public Text Score;
+    public Text Text;
 
     private int count;
 
@@ -30,7 +30,7 @@ public class DestroyScore : MonoBehaviour
 
     void SetScore()
     {
-        Score.text = "Amount of Balls you Have:" + count.ToString();
+        Text.text = "Amount of Balls you Have:" + count.ToString();
     }
     // Update is called once per frame
     void Update()

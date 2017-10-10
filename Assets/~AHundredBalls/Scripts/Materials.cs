@@ -4,18 +4,30 @@ using UnityEngine;
 
 public class Materials : MonoBehaviour {
 
-    public Materials rubber;
-    public Materials metal;
-    public Materials soft;
+    public Material[] colour;
+
+    private Renderer rend;
+
+    
     
     
     // Use this for initialization
     void Start () {
-		
+        RanMaterials();
+        ;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        
+
+    }
+
+    void RanMaterials()
+    {
+        int randomMat = Random.Range(0, colour.Length);
+        rend = GetComponent<Renderer>();
+        rend.material = colour[randomMat];
+        
+    }
 }
