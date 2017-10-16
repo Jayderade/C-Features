@@ -15,7 +15,8 @@ namespace Inheritance
         public float attackRange = 2f;
         public float attackRate = 0.5f;
 
-        private Rigidbody rigid;
+        public static  Rigidbody rigid;
+
         private float attackTimer = 0f;
         private NavMeshAgent nav;
 
