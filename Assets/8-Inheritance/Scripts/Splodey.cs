@@ -15,36 +15,47 @@ namespace Inheritance
 
         private float splosionTimer = 0f;
 
-        public override void Attack()
+        protected override void Update()
         {
-            // Start ignition timer
-            splosionTimer++;
+            base.Update();
+
+            splosionTimer += Time.deltaTime;
+        }
+        protected override void OnAttackEnd()
+        {
             // If splotionTimer > splosionRate
             if (splosionTimer > splosionRate)
             {
                 // Call Explode()
-                Explode(transform.position);
-            }
-        }
-
-        void Explode(Vector3 center)
-        {
-            // Perform Physics OverlapSphere
-            Collider[] hitColliders = Physics.OverlapSphere(center, splosionRadius);
-            // Loop though all hits
-            foreach (Collider hitCol in hitColliders)
-            {
-                // if player
-                if (hitCol.gameObject.name == "Player")
-                {
-                    // Add impact force to rigidbody
-                    hitCol.GetComponent<Rigidbody>().AddExplosionForce(impactForce, center, splosionRadius);
-                }
-                // Destroy self
+                Splode();
                 Destroy(gameObject);
             }
+        }
+        
 
-
+        void Splode()
+        {
+            // Perform Physics OverlapSphere
+            Collider[] hits = Physics.OverlapSphere(transform.position, splosionRadius);
+            // Loop though all hits
+            foreach (var hit in hits)
+            {
+                // if player
+                if (hit.gameObject.name == "Player")
+                {
+                    Health h = hit.GetComponent<Health>();
+                    if (h != null)
+                    {
+                        h.TakeDamage(damage);                       
+                    }
+                    Rigidbody r = hit.GetComponent<Rigidbody>();
+                    if(r != null)
+                    {
+                        
+                        r.AddExplosionForce(impactForce,transform.position,splosionRadius);
+                    }
+                }
+            }
         }
     }
 }
