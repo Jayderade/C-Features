@@ -12,9 +12,9 @@ namespace MOBA
         public Transform target; // Get to the target
         public float nodeRadius = .1f; // How big each node is for the agent to seek to
         public float targetRadius = 3f; // seperate from the nodes that the agent follows
+        public int currentNode = 0; // Keep track of the individual nodes
+        public bool isAtTarget = false; // Has the agent reached the target node?
 
-        private int currentNode = 0; // Keep track of the individual nodes
-        private bool isAtTarget = false; // Has the agent reached the target node?
         private NavMeshAgent nav; // Reference to the agent component
         private NavMeshPath path; // Stores the calculated path in this variable
 
@@ -108,8 +108,7 @@ namespace MOBA
 
                         // Get the current corner position
                         Vector3 currentPos = corners[currentNode];
-                        // Is the agent at the target?
-                        isAtTarget = currentNode == lastIndex;
+                        
                         // Get distance to current pos
                         float distance = Vector3.Distance(transform.position, currentPos);
                         // Is the distance within the node radius?
@@ -118,6 +117,11 @@ namespace MOBA
                             // Move to next node
                             currentNode++;
                         }
+
+                        // Is the agent at the target?
+                        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+                        isAtTarget = currentNode == lastIndex;
+
                         // Seek towards current node's position
                         force = Seek(currentPos);
                     }
