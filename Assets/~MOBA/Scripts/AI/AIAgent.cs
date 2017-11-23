@@ -10,82 +10,79 @@ namespace MOBA
     {
         public float maxSpeed = 10f;
         public float maxDistance = 5f;
+        public bool updatePosition = false;
+        public bool updateRotation = false;
 
-        public bool updatePosition = true;
-        public bool updateRotation = true;
-        
-        [HideInInspector]
-        public Vector3 velocity;
+        [HideInInspector] public Vector3 velocity;
 
         private Vector3 force;
         private List<SteeringBehaviour> behaviours;
         private NavMeshAgent nav;
 
-        // Initialisation
+        // Use this for initialization
         void Awake()
         {
             nav = GetComponent<NavMeshAgent>();
             behaviours = new List<SteeringBehaviour>(GetComponents<SteeringBehaviour>());
         }
 
-        // Calculates all forces from attached SteeringBehaviours
         void ComputeForces()
         {
+            // SET force = Vector3.zero
             force = Vector3.zero;
-            // Loop through all behaviours
-            for(int i = 0; i < behaviours.Count; i++)
+            // FOR i := 0 < behaviours.Count
+            for (int i = 0; i < behaviours.Count; i++)
             {
-                // Get current behavior
-                SteeringBehaviour b = behaviours[i];
-                // Check if behaviour is active and enabled
-                if(!b.isActiveAndEnabled)
+                // LET behaviour = behaviours[i]
+                SteeringBehaviour behaviour = behaviours[i];
+                // IF behaviour.isActiveAndEnabled == false
+                if (!behaviour.isActiveAndEnabled)
                 {
-                    // Skip over to next behaviour
+                    // CONTINUE
                     continue;
                 }
-                // Apply behaviour's force to our final force
-                force += b.GetForce() * b.weighting;
-                // Check if force has gone over maxSpeed
-                if(force.magnitude > maxSpeed)
+                // SET force = force + behaviour.GetForce() * behaviour.weighting
+                force += behaviour.GetForce() * behaviour.weighting;
+                // IF force.magnitude > maxSpeed
+                if (force.magnitude > maxSpeed)
                 {
-                    // Cap the force down to maxSpeed
+                    // SET force = force.normalized * maxSpeed
                     force = force.normalized * maxSpeed;
-                    // Exit for loop
+                    // BREAK
                     break;
                 }
             }
         }
 
-        // Applies the velocity to agent
         void ApplyVelocity()
         {
-            // Increase velocity by force
+            // SET velocity = velocity + force * deltaTime
             velocity += force * Time.deltaTime;
-            // Update nav's speed to velocity
             nav.speed = velocity.magnitude;
-            // Is there a velocity?
-            if (velocity.magnitude > 0)
-            {                
-                // Is velocity is over maxSpeed?
-                if (velocity.magnitude > maxSpeed)
-                {
-                    // Cap velocity to max speed
-                    velocity = velocity.normalized * maxSpeed;
-                }
 
-                // Predict the next position
+            // IF velocity.magnitude > maxSpeed
+            if (velocity.magnitude > maxSpeed)
+            {
+                // SET velocity = velocity.normalized * maxSpeed
+                velocity = velocity.normalized * maxSpeed;
+            }
+            // IF velocity.magnitude > 0
+            if(velocity.magnitude > 0)
+            {
+                // LET pos = transform.position + velocity * deltaTime
                 Vector3 pos = transform.position + velocity;
-                // Perform NavMesh Sampling
+                // LET navHit;
                 NavMeshHit navHit;
-                if(NavMesh.SamplePosition(pos, out navHit, maxDistance, -1))
+                // CALL NavMesh.SamplePosition(pos, out navHit, maxDistance, -1);
+                if (NavMesh.SamplePosition(pos, out navHit, maxDistance, -1))
                 {
-                    // Set nav destination to nav hit position
+                    // CALL nav.SetDestination(navHit.position)
                     nav.SetDestination(navHit.position);
                 }
             }
         }
 
-        // Update
+        // Update is called once per frame
         void Update()
         {
             nav.updatePosition = updatePosition;

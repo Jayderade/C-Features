@@ -2,40 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-namespace MOBA
+public class MoveWithinBounds : MonoBehaviour
 {
-    public class MoveWithinBounds : MonoBehaviour
+    public float movementSpeed = 20f;
+    public float zoomSensitivity = 10f;
+    public CameraBounds bounds;
+    
+    // Update is called once per frame
+    void Update()
     {
+        Vector3 pos = transform.position;
 
-        public float movementSpeed = 20f;
-        public float zoomSensitivity = 10f;
-        public CameraBounds bounds;
-               
-        // Update is called once per frame
-        void Update()
-        {
-            // Store transform position in smaller variable
-            Vector3 pos = transform.position;
+        float inputH = Input.GetAxis("Horizontal");
+        float inputV = Input.GetAxis("Vertical");
 
-            // Get input
-            float inputH = Input.GetAxis("Horizontal");
-            float inputV = Input.GetAxis("Vertical");
+        Vector3 inputDir = new Vector3(inputH, 0f, inputV);
+        pos += inputDir * movementSpeed * Time.deltaTime;
 
-            // Store inputin vector (for movement)
-            Vector3 inputDir = new Vector3(inputH, 0, inputV);
-            pos += inputDir * movementSpeed * Time.deltaTime;
+        float inputScroll = Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
+        Vector3 scrollDir = transform.forward * inputScroll;
+        pos += scrollDir;
 
-            // Get scroll wheel
-            float inputScroll = Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
-            Vector3 scrollDir = transform.forward * inputScroll;
-            pos += scrollDir;
-
-            // Adjust position with bounds
-            pos = bounds.GetAdjustedPos(pos);
-
-            // Overwrite original position with adjusted pos
-            transform.position = pos; 
-        }
+        pos = bounds.GetAdjustedPos(pos);
+        transform.position = pos;
     }
 }

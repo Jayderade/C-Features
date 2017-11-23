@@ -1,75 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
-namespace MOBA
+public class CameraBounds : MonoBehaviour
 {
-    public class CameraBounds : MonoBehaviour
+    public Vector3 size = new Vector3(20f, 0f, 20f);
+
+    public Vector3 GetAdjustedPos(Vector3 incomingPos)
     {
+        Vector3 pos = transform.position;
+        Vector3 halfSize = size * 0.5f;
 
-        public Vector3 size = new Vector3(80f, 0f, 50f);
-
-        private void OnDrawGizmosSelected()
+        if (incomingPos.z > pos.z + halfSize.z)
         {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawCube(transform.position, size);
+            incomingPos.z = pos.z + halfSize.z;
+        }
+        if (incomingPos.z < pos.z - halfSize.z)
+        {
+            incomingPos.z = pos.z - halfSize.z;
         }
 
-        // Adjusts the position to contrain it within size
-        public Vector3 GetAdjustedPos(Vector3 incomingPos)
+        if (incomingPos.x > pos.x + halfSize.x)
         {
-            Vector3 pos = transform.position;
-            Vector3 halfSize = size * 0.5f;
-
-            // Is incomingPos outside the position Z?
-            if(incomingPos.z > pos.z + halfSize.z)
-            {
-                incomingPos.z = pos.z + halfSize.z;
-            }
-
-            // Is incomingPos outside the negative Z?
-            if(incomingPos.z < pos.z - halfSize.z)
-            {
-                incomingPos.z = pos.z - halfSize.z;
-            }
-
-            // Is incomingPos outside the position X?
-            if (incomingPos.x > pos.x + halfSize.x)
-            {
-                incomingPos.x = pos.x + halfSize.x;
-            }
-
-            // Is incomingPos outside the negative X?
-            if (incomingPos.x < pos.x - halfSize.x)
-            {
-                incomingPos.x = pos.x - halfSize.x;
-            }
-
-            // Is incomingPos outside the position Y?
-            if (incomingPos.y > pos.y + halfSize.y)
-            {
-                incomingPos.y = pos.y + halfSize.y;
-            }
-
-            // Is incomingPos outside the negative Y?
-            if (incomingPos.y < pos.y - halfSize.y)
-            {
-                incomingPos.y = pos.y - halfSize.y;
-            }
-
-            return incomingPos;
+            incomingPos.x = pos.x + halfSize.x;
+        }
+        if (incomingPos.x < pos.x - halfSize.x)
+        {
+            incomingPos.x = pos.x - halfSize.x;
         }
 
-        // Use this for initialization
-        void Start()
-        {
+        return incomingPos;
+    }
 
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawCube(transform.position, size);
     }
 }

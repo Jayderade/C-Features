@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace MOBA
 {
+    [RequireComponent(typeof(AIAgent))]
     public class SkeletonArcherAnim : MonoBehaviour
     {
 

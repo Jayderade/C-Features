@@ -7,6 +7,5 @@ namespace MOBA
 {
     public class Wander : SteeringBehaviour
     {
-        
     }
 }
